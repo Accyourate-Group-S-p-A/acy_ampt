@@ -3,8 +3,6 @@
 Accyourate Modified Pam Tompkins Algorhythm.
 A tool to run and compare AMTP with the Pam Tompkins build algorhythm by
 - PIKUS;
-- BERNDPORR;
-
 
 ## Installation
 
@@ -31,7 +29,6 @@ python run.py
 3. Select which analysis algorhytjhm you want to use between:
     - AMTP;
     - PICKUS;
-    - BERNDPORR;
 
 
 ## Results
@@ -44,13 +41,14 @@ The results will be saved into "results" folder of this project directory as a p
 - False Negative: the false negative;
 
 ## Contributing
-[Antonio Augello](https://www.linkedin.com/in/antonio-augello-aba83911a/)
-Description?
+- [Antonio Augello](https://www.linkedin.com/in/antonio-augello-aba83911a/)
+- [Luca Neri](https://www.linkedin.com/in/lucaneri-/)
 
-[Luca Neri](https://www.linkedin.com/in/lucaneri-/)
-Description?
 
-[Antonio Augello](https://www.linkedin.com/in/antonio-augello-aba83911a/)
+## Credits
+- [Sarah Pickus](https://github.com/pickus91/HRV)
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
