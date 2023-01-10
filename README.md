@@ -6,7 +6,7 @@ A tool to run and compare AMTP with the Pam Tompkins build algorhythm by
 
 ## Installation
 
-You can clone this project by running in yout Terminal:
+You can clone this project by running in your Terminal:
 ```
 git clone https://github.com/Accyourate-Group-S-p-A/acy_ampt
 ```
@@ -16,7 +16,14 @@ To install dependencies in your Terminal use:
 pip3 install -r requirements.txt 
 ```
 
-## Dataset Download
+### Depedencies:
+- numpy;
+- pandas;
+- scipy;
+- matplotlib;
+- wfdb;
+
+## How to download the Dataset
 The Dataset downoad is mandatory.
 You can download a .zip file containing the datasets ready to be processed by our tool from the following link:
 https://mega.nz/file/Q1lDRaBK#LgtQ3YkLoN-h7Zc6B5Bg-uFI0stfI1SNP2FIUm3VzDQ
@@ -24,6 +31,12 @@ https://mega.nz/file/Q1lDRaBK#LgtQ3YkLoN-h7Zc6B5Bg-uFI0stfI1SNP2FIUm3VzDQ
 After the download exctract the zip contents and place the "ECG DBs" folder into the main directory of this project.
 
 ## Included datasets
+- A1 - Physionet Challange 2014/A1 - High Quality - SET-P;
+- A2 - Physionet Challange 2014/A2 - Low Quality - Training;
+- B1 - MIT-BIH NSR & ARRHYTHMIA/B1 - NSR DB 1.0.0;
+- B2 - MIT-BIH NSR & ARRHYTHMIA/B2 - ARRHYTHMIA DB 1.0.0;
+- C - MIT-BIH Pacemaker Rhythm - part of ARRHYT DB;
+- D - Harvard Telehealth DB;
 
 ## Usage
 ```
