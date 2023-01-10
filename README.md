@@ -1,6 +1,6 @@
-# AMTP - Accyourate Modified Pan-Tompkins
+# AMPT - Accyourate Modified Pan-Tompkins
 
-A tool to run and compare AMTP peak detection results with the Pan-Tompkins build algorhythm by Sara Pikus to compare accuracy and execution speed of the analysis.
+A tool to run and compare AMPT peak detection results with the Pan-Tompkins build algorhythm by Sara Pikus to compare accuracy and execution speed of the analysis.
 
 ## Installation
 
@@ -44,7 +44,7 @@ python3 run.py
 1. Select the Dataset you would like to use;
 2. Select if you want to resample the ECG to 200Hz;
 3. Select which analysis algorhytjhm you want to use between:
-    - AMTP;
+    - AMPT;
     - PICKUS;
 
 

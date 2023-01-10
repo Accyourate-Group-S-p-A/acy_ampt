@@ -49,7 +49,10 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
             print("---------------")
             print(f)
             f_list.append(filename)
-            record = wfdb.rdrecord(path + filename[:len(filename)-4], channels=[0])
+            if path == "ECG DBs/B - MIT-BIH NSR & ARRHYTHMIA/B1 - NSR DB 1.0.0/":
+                record = wfdb.rdrecord(path + filename[:len(filename)-4], sampfrom=0, sampto=230400, channels=[0])
+            else:
+                record = wfdb.rdrecord(path + filename[:len(filename)-4], channels=[0])
 
             not_resampled_signal = [i for i in np.ravel(record.p_signal)]
 
@@ -137,6 +140,14 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
                     'False Negative': [i for i in fn_list]
                 }
 
+    # checking if the directory results 
+    # exist or not.
+    if not os.path.exists("results"):
+        
+        # if the results directory is not present 
+        # then create it.
+        os.makedirs("results")
+        
     if pan == False:
         if resample_ecg:
             # SAVE CSV FILE FULL ANALYSIS

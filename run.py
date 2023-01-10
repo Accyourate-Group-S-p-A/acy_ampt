@@ -36,7 +36,6 @@ def main():
         pan = True
         pan_to_use = 2
 
-
     if index == 0:
         """ A1 """
         from runners.run_mit_resample import main
