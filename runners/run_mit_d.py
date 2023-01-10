@@ -7,16 +7,16 @@ import wfdb
 
 # OUR TOOLS
 from ecg_processing.signal_anomalies_detector import countAnomalies, beatsClassification4, detect_arrythmia
-from ecg_processing.signal_filtering import movingAverageMean, bandpassFilt, derivateStep, movingAverageMeanPamTompkins
+from ecg_processing.signal_filtering import movingAverageMean, bandpassFilt, derivateStep, movingAverageMeanpanTompkins
 from ecg_processing.signal_peak_detector import AMPT, panPeakDetect
 from mit_processing.mit_reader import getAnnotation, countAnnotationAnomalies
 from mit_processing.load_annotation import loadAnnotationSampleFromPath, loadAnnotationSampleFromPathD
 from mit_processing.mit_analysis import checkNegative, checkPositive
-from mit_processing.pam import panTompkins
+from mit_processing.pan import panTompkins
 
 time_window = 150
 
-def main(path, fs, subpath, pam=False, plot=False):
+def main(path, fs, subpath, pan=False, plot=False):
     fileList = []
     for filename in os.listdir(path):
         fileList.append(filename)
@@ -51,14 +51,14 @@ def main(path, fs, subpath, pam=False, plot=False):
             f_list.append(filename)
             record = np.genfromtxt(path + filename[:len(filename)-12] + '_samples' + ".dat", delimiter="")
 
-            if pam == False:
+            if pan == False:
                 newEcgFilt = bandpassFilt(record, 4, fs, 15, 5)
 
                 derivateSignal = derivateStep(newEcgFilt)
 
                 squaredEcgfromderivate = np.power(np.abs(derivateSignal), 2)
 
-                panTompkinsEcgfromderivate = movingAverageMeanPamTompkins(squaredEcgfromderivate, fs)  
+                panTompkinsEcgfromderivate = movingAverageMeanpanTompkins(squaredEcgfromderivate, fs)  
                 start_time = time.time()
                 peaks, thres = AMPT(panTompkinsEcgfromderivate, fs)
                 print(time.time() - start_time)
@@ -70,7 +70,7 @@ def main(path, fs, subpath, pam=False, plot=False):
 
                 squaredEcgfromderivate = np.power(np.abs(derivateSignal), 2)
 
-                panTompkinsEcgfromderivate = movingAverageMeanPamTompkins(squaredEcgfromderivate, fs)  
+                panTompkinsEcgfromderivate = movingAverageMeanpanTompkins(squaredEcgfromderivate, fs)  
                 start_time = time.time()
                 # peaks, time_passed = panTompkins(signal, fs)
                 #peaks = nk.ecg_findpeaks(panTompkinsEcgfromderivate, sampling_rate=360, method="pantompkins1985")
@@ -150,7 +150,7 @@ def main(path, fs, subpath, pam=False, plot=False):
 
     print(my_dict)
 
-    if pam == False:
+    if pan == False:
         # SAVE CSV FILE FULL ANALYSIS
         df = pd.DataFrame(my_dict)
         print(df)
@@ -166,15 +166,15 @@ def main(path, fs, subpath, pam=False, plot=False):
         df = pd.DataFrame(my_dict)
         print(df)
         
-        df.to_csv (path + "Pam_" + subpath + ".csv", index = False, header=True)
+        df.to_csv (path + "pan_" + subpath + ".csv", index = False, header=True)
         
         # SAVE CSV FILE ANOMALIES COUNT
         df1 = pd.DataFrame(cat_dict)
         print(df1)
-        df1.to_csv (path + "Pam_" + subpath + "_" + "anomalies" + ".csv", index = False, header=True)
+        df1.to_csv (path + "pan_" + subpath + "_" + "anomalies" + ".csv", index = False, header=True)
 
 ###############
 #     RUN     # 
 ###############
 
-main(fullPath, fs, subpath, pam=True, plot=False)
+main(fullPath, fs, subpath, pan=True, plot=False)

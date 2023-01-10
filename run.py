@@ -3,7 +3,8 @@ from pick import pick
 def main():
 
     resample = False
-    pam_to_use = 0
+    pan_to_use = 0
+    pan = False
 
     title = 'Please choose which Dataset you would like to run: '
     options = ['A1', 'A2', 'B1', 'B2', 'C', 'D']
@@ -25,14 +26,15 @@ def main():
 
     options_select_algorhythm, index_select_algorhythm = pick(options_select_algorhythm, title_select_algorhythm, indicator='=>', default_index=0)
     
+
     if index_select_algorhythm == 0:
-        pam = False
+        pan = False
     if index_select_algorhythm == 1:
-        pam = True
-        pam_to_use = 1
+        pan = True
+        pan_to_use = 1
     if index_select_algorhythm == 2:
-        pam = True
-        pam_to_use = 2
+        pan = True
+        pan_to_use = 2
 
 
     if index == 0:
@@ -41,7 +43,7 @@ def main():
         path = "ECG DBs/A - Physionet Challange 2014/A1 - High Quality - SET-P/"
 
         fs = 250
-        main(path, fs, "results/", pam=False, plot=False, pam_to_use=pam_to_use, resample_ecg=resample)
+        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 1:
         """ A2 """
@@ -49,7 +51,7 @@ def main():
         path = "ECG DBs/A - Physionet Challange 2014/A2 - Low Quality - Training/"
 
         fs = 360
-        main(path, fs, "results/", pam=False, plot=False, pam_to_use=pam_to_use, resample_ecg=resample)
+        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 2:
         """ B1 """
@@ -57,7 +59,7 @@ def main():
         path = "ECG DBs/B - MIT-BIH NSR & ARRHYTHMIA/B1 - NSR DB 1.0.0/"
 
         fs = 128
-        main(path, fs, "results/", pam=False, plot=False, pam_to_use=pam_to_use, resample_ecg=resample)
+        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 3:
         """ B2 """
@@ -65,7 +67,7 @@ def main():
         path = "ECG DBs/B - MIT-BIH NSR & ARRHYTHMIA/B2 - ARRHYTHMIA DB 1.0.0/"
 
         fs = 360
-        main(path, fs, "results/", pam=False, plot=False, pam_to_use=pam_to_use, resample_ecg=resample)
+        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 4:
         """ C """
@@ -73,7 +75,7 @@ def main():
         path = "ECG DBs/C - MIT-BIH Pacemaker Rhythm - part of ARRHYT DB/"
 
         fs = 360
-        main(path, fs, "results/", pam=False, plot=False, pam_to_use=pam_to_use, resample_ecg=resample)
+        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 5:
         """ D """
@@ -81,6 +83,6 @@ def main():
         path = "ECG DBs/D - Harvard Telehealth DB/"
 
         fs = 500
-        main(path, fs, "results/", pam=False, plot=False, pam_to_use=pam_to_use, resample_ecg=resample)
+        main(path, fs, "results/", pan=False, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
 main()

@@ -61,9 +61,10 @@ The results will be saved into "results" folder of this project directory as a .
 - [Antonio Augello](https://www.linkedin.com/in/antonio-augello-aba83911a/)
 - [Luca Neri](https://www.linkedin.com/in/lucaneri-/)
 - Matt T. Oberdier
+- Sujai Jaipalli
 
 ## Credits
-- [Sarah Pickus - Reprodution of Pam Tompkins](https://github.com/pickus91/HRV)
+- [Sarah Pickus - Reprodution of pan Tompkins](https://github.com/pickus91/HRV)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

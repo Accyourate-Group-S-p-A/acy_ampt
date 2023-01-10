@@ -26,7 +26,7 @@ def movingAverageMean(data, size):
     return moving_averages
 
 
-def movingAverageMeanPamTompkins(data, fs):
+def movingAverageMeanPanTompkins(data, fs):
     newData = []
     for i in data:
         newData.append(i)

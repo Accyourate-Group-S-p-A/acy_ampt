@@ -8,17 +8,17 @@ from ecgdetectors import panPeakDetect
 
 # OUR TOOLS
 from ecg_processing.signal_anomalies_detector import countAnomalies, beatsClassification4, detect_arrythmia
-from ecg_processing.signal_filtering import movingAverageMean, bandpassFilt, derivateStep, movingAverageMeanPamTompkins
+from ecg_processing.signal_filtering import movingAverageMean, bandpassFilt, derivateStep, movingAverageMeanpanTompkins
 from ecg_processing.signal_peak_detector import AMPT, panPeakDetect
 from ecg_processing.signal_analysis import calculateNNI
 from mit_processing.mit_reader import getAnnotation, countAnnotationAnomalies
 from mit_processing.load_annotation import loadAnnotationSampleFromPathSinus
 from mit_processing.mit_analysis import checkNegative, checkPositive
-from mit_processing.pam import panTompkins
+from mit_processing.pan import panTompkins
 
 time_window = 75
 
-def main(path, fs, subpath, pam=False, plot=False):
+def main(path, fs, subpath, pan=False, plot=False):
     fileList = []
     for filename in os.listdir(path):
         fileList.append(filename)
@@ -58,14 +58,14 @@ def main(path, fs, subpath, pam=False, plot=False):
             peak_list = []
             i=1
             count_peaks_iteration = 0
-            if pam == False:
+            if pan == False:
                 data = wfdb.rdrecord(path + filename[:len(filename)-4], sampfrom=0, sampto=230400, channels=[0])
                 signal_average_mean_removed = movingAverageMean(data.p_signal, fs)
                 if np.max(signal_average_mean_removed)>1.0:
                     newEcgFilt = bandpassFilt(data.p_signal, 4, fs, 15, 5)
                     derivateSignal = derivateStep(newEcgFilt)
                     squaredEcgfromderivate = np.power(np.abs(derivateSignal), 2)
-                    panTompkinsEcgfromderivate = movingAverageMeanPamTompkins(squaredEcgfromderivate, fs) 
+                    panTompkinsEcgfromderivate = movingAverageMeanpanTompkins(squaredEcgfromderivate, fs) 
 
                     start_time = time.time()
                     peaks, _ = AMPT(panTompkinsEcgfromderivate, fs)
@@ -92,9 +92,9 @@ def main(path, fs, subpath, pam=False, plot=False):
                     newEcgFilt = bandpassFilt(data.p_signal, 4, fs, 15, 5)
                     derivateSignal = derivateStep(newEcgFilt)
                     squaredEcgfromderivate = np.power(np.abs(derivateSignal), 2)
-                    panTompkinsEcgfromderivate = movingAverageMeanPamTompkins(squaredEcgfromderivate, fs) 
+                    panTompkinsEcgfromderivate = movingAverageMeanpanTompkins(squaredEcgfromderivate, fs) 
 
-                    #signal_pam = np.ravel(data.p_signal)
+                    #signal_pan = np.ravel(data.p_signal)
                     
                     start_time = time.time()
                     # peaks, time_passed = panTompkins(signal, fs)
@@ -157,8 +157,8 @@ def main(path, fs, subpath, pam=False, plot=False):
             count = count+1
 
             if plot == True: # -> Not recoomended in automatic analysis due to the big data lenght
-                ECG = np.array(signal_pam)
-                plt.plot(signal_pam, label="ECG")
+                ECG = np.array(signal_pan)
+                plt.plot(signal_pan, label="ECG")
                 # All annotation peaks in plot 
                 plt.scatter(annotationSample, ECG[annotationSample], c = 'k', s = 30, label='MIT Annotations')
                 plt.scatter(peak_list, ECG[peak_list], marker="o", c = 'r', s = 30, label='python Detected Peaks')
@@ -185,7 +185,7 @@ def main(path, fs, subpath, pam=False, plot=False):
                     'cat_5' : [i for i in cat_5]
                 }
 
-    if pam == False:
+    if pan == False:
         # SAVE CSV FILE FULL ANALYSIS
         df = pd.DataFrame(my_dict)
         print(df)
@@ -201,15 +201,15 @@ def main(path, fs, subpath, pam=False, plot=False):
         df = pd.DataFrame(my_dict)
         print(df)
         
-        df.to_csv (path + "Pam_" + subpath + ".csv", index = False, header=True)
+        df.to_csv (path + "pan_" + subpath + ".csv", index = False, header=True)
         
         # SAVE CSV FILE ANOMALIES COUNT
         df1 = pd.DataFrame(cat_dict)
         print(df1)
-        df1.to_csv (path + "Pam_" + subpath + "_" + "anomalies" + ".csv", index = False, header=True)
+        df1.to_csv (path + "pan_" + subpath + "_" + "anomalies" + ".csv", index = False, header=True)
 
 ###############
 #     RUN     # 
 ###############
 
-main(fullPath, fs, subpath, pam=True, plot=False)
+main(fullPath, fs, subpath, pan=True, plot=False)

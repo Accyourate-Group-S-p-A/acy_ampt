@@ -7,15 +7,17 @@ import wfdb
 from scipy.signal import resample, resample_poly
 
 # OUR TOOLS
-from ecg_processing.signal_filtering import movingAverageMean, bandpassFilt, derivateStep, movingAverageMeanPamTompkins
+from ecg_processing.signal_filtering import movingAverageMean, bandpassFilt, derivateStep, movingAverageMeanPanTompkins
 from ecg_processing.signal_peak_detector import AMPT, panPeakDetect
 from mit_processing.load_annotation import loadAnnotationSampleFromPath
 from mit_processing.mit_analysis import checkNegative, checkPositive
-from mit_processing.pam import panTompkins
+from mit_processing.pan import panTompkins
 
 time_window = 150
 
-def main(path, fs, subpath, pam=False, plot=False, pam_to_use=1, resample_ecg=False):
+def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=False):
+    
+    signal_sampling = fs
     fileList = []
     for filename in os.listdir(path):
         fileList.append(filename)
@@ -53,19 +55,19 @@ def main(path, fs, subpath, pam=False, plot=False, pam_to_use=1, resample_ecg=Fa
 
             if resample_ecg:
                 ## HERE TO RESAMPLE
-                ecg_resampled = resample(not_resampled_signal, int(len(not_resampled_signal) * 200 / 360))
+                ecg_resampled = resample(not_resampled_signal, int(len(not_resampled_signal) * 200 / signal_sampling))
                 fs = 200
             else:
                 ecg_resampled = not_resampled_signal
-                fs = 360
+                fs = signal_sampling
             
-            if pam == False:
+            if pan == False:
                 newEcgFilt = bandpassFilt(ecg_resampled, 4, fs, 15, 5)
 
                 derivateSignal = derivateStep(newEcgFilt)
                 squaredEcgfromderivate = np.power(np.abs(derivateSignal), 2)
 
-                panTompkinsEcgfromderivate = movingAverageMeanPamTompkins(squaredEcgfromderivate, fs)  
+                panTompkinsEcgfromderivate = movingAverageMeanPanTompkins(squaredEcgfromderivate, fs)  
                 
                 start_time = time.time()
                 peaks, _ = AMPT(panTompkinsEcgfromderivate, fs)
@@ -73,18 +75,18 @@ def main(path, fs, subpath, pam=False, plot=False, pam_to_use=1, resample_ecg=Fa
                 time_list.append(time.time() - start_time)
 
             else:
-                if pam_to_use == 1:
+                if pan_to_use == 1:
                     peaks, time_time = panTompkins(ecg_resampled, fs)
                     print(time_time)
                     time_list.append(time_time)
 
-                if pam_to_use == 2:
+                if pan_to_use == 2:
                     newEcgFilt = bandpassFilt(ecg_resampled, 4, fs, 15, 5)
 
                     derivateSignal = derivateStep(newEcgFilt)
                     squaredEcgfromderivate = np.power(np.abs(derivateSignal), 2)
 
-                    panTompkinsEcgfromderivate = movingAverageMeanPamTompkins(squaredEcgfromderivate, fs)  
+                    panTompkinsEcgfromderivate = movingAverageMeanPanTompkins(squaredEcgfromderivate, fs)  
                     
                     start_time = time.time()
                     peaks = panPeakDetect(panTompkinsEcgfromderivate, fs)
@@ -135,16 +137,30 @@ def main(path, fs, subpath, pam=False, plot=False, pam_to_use=1, resample_ecg=Fa
                     'False Negative': [i for i in fn_list]
                 }
 
-    if pam == False:
-        # SAVE CSV FILE FULL ANALYSIS
-        df = pd.DataFrame(my_dict)
-        print(df)
-        
-        df.to_csv (subpath + "YouCare_resampled" + ".csv", index = False, header=True)
+    if pan == False:
+        if resample_ecg:
+            # SAVE CSV FILE FULL ANALYSIS
+            df = pd.DataFrame(my_dict)
+            print(df)
+            
+            df.to_csv (subpath + "YouCare_resampled" + ".csv", index = False, header=True)
+        else:
+            # SAVE CSV FILE FULL ANALYSIS
+            df = pd.DataFrame(my_dict)
+            print(df)
+            
+            df.to_csv (subpath + "YouCare_not_resampled" + ".csv", index = False, header=True)
         
     else:
-        # SAVE CSV FILE FULL ANALYSIS
-        df = pd.DataFrame(my_dict)
-        print(df)
-        
-        df.to_csv (subpath + "Pam_resampled_" + str(pam_to_use) + ".csv", index = False, header=True)
+        if resample_ecg:
+            # SAVE CSV FILE FULL ANALYSIS
+            df = pd.DataFrame(my_dict)
+            print(df)
+
+            df.to_csv(subpath + "pan_resampled_" + str(pan_to_use) + ".csv", index=False, header=True)
+        else:
+            # SAVE CSV FILE FULL ANALYSIS
+            df = pd.DataFrame(my_dict)
+            print(df)
+
+            df.to_csv(subpath + "pan_not_resampled_" + str(pan_to_use) + ".csv", index=False, header=True)
