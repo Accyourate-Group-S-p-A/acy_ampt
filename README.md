@@ -1,8 +1,6 @@
-# AMTP - RUN AND COMPARE
+# AMTP - Accyourate Modified Pan-Tompkins
 
-Accyourate Modified Pam Tompkins Algorhythm.
-A tool to run and compare AMTP with the Pam Tompkins build algorhythm by
-- PIKUS;
+A tool to run and compare AMTP peak detection results with the Pan-Tompkins build algorhythm by Sara Pikus to compare accuracy and execution speed of the analysis.
 
 ## Installation
 
@@ -59,7 +57,7 @@ The results will be saved into "results" folder of this project directory as a .
 - False Positive: the false positive;
 - False Negative: the false negative;
 
-## Contributing
+## Authors
 - [Antonio Augello](https://www.linkedin.com/in/antonio-augello-aba83911a/)
 - [Luca Neri](https://www.linkedin.com/in/lucaneri-/)
 - Matt T. Oberdier
@@ -67,7 +65,5 @@ The results will be saved into "results" folder of this project directory as a .
 ## Credits
 - [Sarah Pickus - Reprodution of Pam Tompkins](https://github.com/pickus91/HRV)
 
-
 ## License
-
 [MIT](https://choosealicense.com/licenses/mit/)
