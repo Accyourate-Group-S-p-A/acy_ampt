@@ -42,15 +42,15 @@ def main():
         path = "ECG DBs/A - Physionet Challange 2014/A1 - High Quality - SET-P/"
 
         fs = 250
-        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
+        main(path, fs, "results/A1/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 1:
         """ A2 """
         from runners.run_mit_resample import main
         path = "ECG DBs/A - Physionet Challange 2014/A2 - Low Quality - Training/"
 
-        fs = 360
-        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
+        fs = 360 
+        main(path, fs, "results/A2/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 2:
         """ B1 """
@@ -58,7 +58,7 @@ def main():
         path = "ECG DBs/B - MIT-BIH NSR & ARRHYTHMIA/B1 - NSR DB 1.0.0/"
 
         fs = 128
-        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
+        main(path, fs, "results/B1/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 3:
         """ B2 """
@@ -66,7 +66,7 @@ def main():
         path = "ECG DBs/B - MIT-BIH NSR & ARRHYTHMIA/B2 - ARRHYTHMIA DB 1.0.0/"
 
         fs = 360
-        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
+        main(path, fs, "results/B2/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 4:
         """ C """
@@ -74,7 +74,7 @@ def main():
         path = "ECG DBs/C - MIT-BIH Pacemaker Rhythm - part of ARRHYT DB/"
 
         fs = 360
-        main(path, fs, "results/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
+        main(path, fs, "results/C/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
     if index == 5:
         """ D """
@@ -82,6 +82,6 @@ def main():
         path = "ECG DBs/D - Harvard Telehealth DB/"
 
         fs = 500
-        main(path, fs, "results/", pan=False, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
+        main(path, fs, "results/D/", pan=False, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
 main()

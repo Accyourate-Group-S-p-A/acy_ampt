@@ -18,6 +18,22 @@ time_window = 150
 
 def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=False):
 
+    if pan_to_use==0:
+        pan_used = "AMPT"
+    if pan_to_use==1:
+        pan_used = "PIKUS"
+
+    print()
+    print("********")
+    print("Starting peak detection analysis on dataset '%s'"%(path))
+    print()
+    print("Peak detector: %s"%(pan_used))
+    print("Sample base sampling frequency: %s"%(fs))
+    print("Trace resampled to 200HZ: %s"%(resample_ecg))
+    print("Plot enabled: %s"%(plot))
+    print("********")
+    print()
+
     signal_sampling = fs
 
     fileList = []
@@ -143,7 +159,7 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
                     'False Negative': [i for i in fn_list]
                 }
 
-  
+    
     # checking if the directory results 
     # exist or not.
     if not os.path.exists("results"):
@@ -151,6 +167,15 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
         # if the results directory is not present 
         # then create it.
         os.makedirs("results")
+
+    # checking if the directory results 
+    # exist or not.
+    if not os.path.exists(subpath[:-1]):
+        print("NOT EXIST")
+        
+        # if the results directory is not present 
+        # then create it.
+        os.makedirs(subpath[:-1])
 
     if pan == False:
         if resample_ecg:

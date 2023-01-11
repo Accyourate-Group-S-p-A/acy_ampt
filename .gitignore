@@ -2,3 +2,4 @@ ECG DBs/
 venv/
 __pycache__/
 *.pyc
+/results

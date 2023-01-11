@@ -164,6 +164,15 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
         # if the results directory is not present 
         # then create it.
         os.makedirs("results")
+
+    # checking if the directory results 
+    # exist or not.
+    if not os.path.exists(subpath[:-1]):
+        print("NOT EXIST")
+        
+        # if the results directory is not present 
+        # then create it.
+        os.makedirs(subpath[:-1])
         
     if pan == False:
         if resample_ecg:
