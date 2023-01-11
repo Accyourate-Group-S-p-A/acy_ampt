@@ -22,7 +22,7 @@ def main():
         resample = False
 
     title_select_algorhythm = 'Which Algorhythm do you want to use? '
-    options_select_algorhythm = ['AMTP', 'PICKUS']
+    options_select_algorhythm = ['AMPT', 'PICKUS']
 
     options_select_algorhythm, index_select_algorhythm = pick(options_select_algorhythm, title_select_algorhythm, indicator='=>', default_index=0)
     
