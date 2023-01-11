@@ -9,7 +9,7 @@ from scipy.signal import resample, resample_poly
 # OUR TOOLS
 from ecg_processing.signal_filtering import movingAverageMean, bandpassFilt, derivateStep, movingAverageMeanPanTompkins
 from ecg_processing.signal_peak_detector import AMPT, panPeakDetect
-from mit_processing.load_annotation import loadAnnotationSampleFromPath
+from mit_processing.load_annotation import loadAnnotationSampleFromPath, loadAnnotationSampleFromPathSinus
 from mit_processing.mit_analysis import checkNegative, checkPositive
 from mit_processing.pan import panTompkins
 
@@ -57,6 +57,7 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
     cat_3 = []
     cat_4 = []
     cat_5 = []
+    
 
     for f in fileList:
         filename = str(f)
@@ -80,6 +81,8 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
                 ecg_resampled = not_resampled_signal
                 fs = signal_sampling
             
+            count_peaks_iteration = 0
+
             if pan == False:
                 newEcgFilt = bandpassFilt(ecg_resampled, 4, fs, 15, 5)
 
@@ -120,7 +123,10 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
             # ANNOTATIONS #
             ###############
 
-            annotationSample = loadAnnotationSampleFromPath(path, filename[:len(filename)-4])
+            if path == "ECG DBs/B - MIT-BIH NSR & ARRHYTHMIA/B1 - NSR DB 1.0.0/":
+                annotationSample = loadAnnotationSampleFromPathSinus(path, filename[:len(filename)-4], counter=count_peaks_iteration, sampfrom=0, sampTo=230400)
+            else:
+                annotationSample = loadAnnotationSampleFromPath(path, filename[:len(filename)-4])
 
             if resample_ecg:
                 # print(annotationSample)
@@ -134,6 +140,8 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
             
             fp_list.append(len(fp))
             fn_list.append(len(fn))
+
+            count_peaks_iteration += 1
 
             if plot == True: # -> Not recoomended in automatic analysis due to the big data lenght
                 ECG = np.array(ecg_resampled)
