@@ -16,34 +16,46 @@ def diffInt(arr, val=None):
     return diff
 
 def AMPT(signal, fs):
-    start_time = time.time()
-    #print("STARTING TIME:")
-    #print(start_time)
-    signalPeaks = [0]
+    """
+    Accyourate Modified Pan Tompkins, a modified and faster Pan Tompkins based algorhythm.
 
-    SPKI = 0.0
-    NPKI = 0.0
+    Pan, Jiapu, and Willis J. Tompkins. "A real-time QRS detection algorithm." 
+    IEEE transactions on biomedical engineering 3 (1985): 230-236.
 
-    thresholdI1 = 0.0
-    thresholdI2 = 0.0
+    ARGS:
+    - signal: filtered signal;
+    - fs: sampling frequency;
 
-    RRMissed = 0
+    RETURNS:
+    - signalPeaks: detected peaks excluding the first peak;
+    - thrheshold_list: the threshold list detected while analyzing the signal;
+    """
+
+    signalPeaks = [0] # Initialize list to store detected peaks
+
+    SPKI = 0.0 # Running average of signal values at peaks
+    NPKI = 0.0 # Running average of signal values not at peaks
+
+    thresholdI1 = 0.0 # Initial threshold value
+    thresholdI2 = 0.0 # Initial threshold value
+
+    RRMissed = 0 # Number of missed RR intervals
     index = 0
 
-    peaks = []
-    thrheshold_list = []
+    peaks = []  # Initialize list to store identified peaks in the signal
+    thrheshold_list = []  # Initialize list to store threshold values
 
     for i in range(len(signal)):
+        # Identify local maxima (peaks) in the signal
         if i > 0 and i < len(signal)-1:
             if signal[i-1] < signal[i] and signal[i+1] < signal[i]:
                 peaks.append(i)
 
     i = 1
     while i < len(peaks)-2:
+        # Check if an RR interval has been missed
         if len(signalPeaks)>2 and RRMissed>0:
             if peaks[i]- signalPeaks[-1]>RRMissed:
-                #print("RR Missed: ")
-                #print((time.time() - start_time))
                 
                 RRMissedPrev = RRMissed
                 RRMissed = 0.0
@@ -53,30 +65,35 @@ def AMPT(signal, fs):
                 z = x
                 while z < y:
                     if z!=0:
+                        # Check if peak is above the threshold value and is a local maxima
                         if signal[peaks[z]] > thresholdI2 and signal[peaks[z]] > signal[peaks[z-1]] and signal[peaks[z]] > signal[peaks[z+1]]:
-                            #signalPeaks.append(peaks[z])
                             if peaks[z]-signalPeaks[-1]>0.2*fs:
                                 signalPeaks.append(peaks[z])
                                 SPKI = 0.125*signal[peaks[i]] + 0.875*SPKI
-                                #signalPeaks.sort()
                             else:
                                 NPKI = 0.125*signal[peaks[i]] + 0.875*NPKI
                     z+=1
-
+                    
+        # Check if peak is above the threshold value and is a local maxima
         if signal[peaks[i]] > thresholdI1 and signal[peaks[i]] > signal[peaks[i-1]] and signal[peaks[i]] > signal[peaks[i+1]]:
+            # Check if the peak is a valid QRS complex
             if peaks[i] - signalPeaks[-1] > 0.36*fs: # Total PQRST Interval 
                 signalPeaks.append(peaks[i]) # Signal Peak
                 SPKI = 0.125*signal[peaks[i]] + 0.875*SPKI
+
             # T Wave Discrimination
             if peaks[i] - signalPeaks[-1] >0.2*fs and peaks[i] - signalPeaks[-1] < 0.36*fs and signal[peaks[i]] > 0.5*signal[signalPeaks[-1]]:
                 signalPeaks.append(peaks[i]) # Signal Peak
                 SPKI = 0.125*signal[peaks[i]] + 0.875*SPKI
         else:
+            # Update noise thresholds
             NPKI = 0.125*signal[peaks[i]] + 0.875*NPKI 
 
+        # Update signal thresholds
         thresholdI1 = NPKI + 0.25*(SPKI - NPKI)
         thrheshold_list.append(NPKI)
 
+        # Check for missing peaks
         if len(signalPeaks)>8:
             array=signalPeaks[len(
                             signalPeaks) - 9: len(signalPeaks) - 2]
@@ -89,9 +106,7 @@ def AMPT(signal, fs):
         i += 1
     i = 1
     
-    # Consider to remove it 
-    # print("LAST RR FILTERING: ")
-    # print((time.time() - start_time))
+    # Check for too close peaks to filter the real peak
     while i < len(signalPeaks)-1:
         if signalPeaks[i]-signalPeaks[i-1] < fs/1000*fs:
             if signal[signalPeaks[i]]>signal[signalPeaks[i-1]]:
@@ -99,11 +114,9 @@ def AMPT(signal, fs):
             else:
                 signalPeaks.pop(i)
         i+=1 
-    # print("-------------- ")
 
-    # print("END TIME: ")
-    # print((time.time() - start_time))
     return signalPeaks[1:], thrheshold_list
+
 
 def panPeakDetect(detection, fs):
     min_distance = int(0.25*fs)
