@@ -81,6 +81,6 @@ def main():
         path = "ECG DBs/D - Harvard Telehealth DB/"
 
         fs = 500
-        main(path, fs, "results/D/", pan=False, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
+        main(path, fs, "results/D/", pan=pan, plot=False, pan_to_use=pan_to_use, resample_ecg=resample)
 
 main()
