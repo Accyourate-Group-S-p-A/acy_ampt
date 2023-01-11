@@ -164,7 +164,7 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
             df = pd.DataFrame(my_dict)
             print(df)
             
-            df.to_csv (subpath + "YouCare_not_resampled" + ".csv", index = False, header=True))
+            df.to_csv (subpath + "YouCare_not_resampled" + ".csv", index = False, header=True)
     else:
         if resample_ecg:
             # SAVE CSV FILE FULL ANALYSIS

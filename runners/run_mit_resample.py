@@ -16,7 +16,23 @@ from mit_processing.pan import panTompkins
 time_window = 150
 
 def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=False):
-    
+
+    if pan_to_use==0:
+        pan_used = "AMPT"
+    if pan_to_use==1:
+        pan_used = "PIKUS"
+
+    print()
+    print("********")
+    print("Starting peak detection analysis on dataset '%s'"%(path))
+    print()
+    print("Peak detector: %s"%(pan_used))
+    print("Sample base sampling frequency: %s"%(fs))
+    print("Trace resampled to 200HZ: %s"%(resample_ecg))
+    print("Plot enabled: %s"%(plot))
+    print("********")
+    print()
+
     signal_sampling = fs
     fileList = []
     for filename in os.listdir(path):
@@ -78,6 +94,7 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
                 time_list.append(time.time() - start_time)
 
             else:
+                # Pikus
                 if pan_to_use == 1:
                     peaks, time_time = panTompkins(ecg_resampled, fs)
                     print(time_time)
@@ -107,7 +124,7 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
 
             if resample_ecg:
                 # print(annotationSample)
-                annotationSample = [int(i * 200 / 360) for i in annotationSample]
+                annotationSample = [int(i * 200 / signal_sampling) for i in annotationSample]
                 
             # print(annotationSample)
             annotation_peaks_list.append(len(annotationSample))
@@ -125,8 +142,8 @@ def main(path, fs, subpath, pan=False, plot=False, pan_to_use=1, resample_ecg=Fa
                 plt.scatter(annotationSample, ECG[annotationSample], c = 'k', s = 30, label='MIT Annotations')
                 plt.scatter(peaks, ECG[peaks], marker="o", c = 'r', s = 30, label='python Detected Peaks')
                 # FP and FN in plot
-                # plt.vlines(fp, ymin=np.min(ECG), ymax=np.max(ECG), color="y",linewidth=1, label='Fake +')
-                # plt.vlines(fn, ymin=np.min(ECG), ymax=np.max(ECG), color="r", linewidth=1, label='Fake -')
+                plt.vlines(fp, ymin=np.min(ECG), ymax=np.max(ECG), color="y",linewidth=1, label='Fake +')
+                plt.vlines(fn, ymin=np.min(ECG), ymax=np.max(ECG), color="r", linewidth=1, label='Fake -')
                 plt.legend()
                 plt.show()
             print("______________________________")
