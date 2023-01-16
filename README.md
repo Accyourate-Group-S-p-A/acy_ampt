@@ -1,6 +1,11 @@
 # AMPT - Accyourate Modified Pan-Tompkins
 
-A tool to run and compare AMPT peak detection results with the Pan-Tompkins build algorhythm by Sara Pikus to compare accuracy and execution speed of the analysis.
+This page provides code, datasets, and instructions to run and compare algorithms for ECG QRS detection. Featured here is a version of the Pan-Tompkins algorithm by Sara Pickus and a novel algorithm by our group called, the Accyourate Modified Pan-Tompkins (AMPT).
+
+
+The Pan-Tompkins:
+
+https://pubmed.ncbi.nlm.nih.gov/3997178/
 
 ## Installation
 
